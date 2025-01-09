@@ -70,7 +70,6 @@ AUnrealEngineCharacter::AUnrealEngineCharacter()
 void AUnrealEngineCharacter::BeginPlay()
 {
 	// Call the base class  
-	UE_LOG(LogTemp, Warning, TEXT("AUnrealEngineCharacter Start!"));
 	Super::BeginPlay();
 }
 
@@ -207,7 +206,6 @@ float AUnrealEngineCharacter::TakeDamage(float DamageTaken, struct FDamageEvent 
 // πﬂªÁ√º
 void AUnrealEngineCharacter::StartFire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("StartFire Start!"));
 	if (!bIsFiringWeapon)
 	{
 		bIsFiringWeapon = true;
