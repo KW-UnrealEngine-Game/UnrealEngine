@@ -10,9 +10,6 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
-#include "Net/UnrealNetwork.h"		
-#include "Engine/Engine.h"
-#include "ThirdPersonMPProjectile.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -56,15 +53,6 @@ AUnrealEngineCharacter::AUnrealEngineCharacter()
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 
-	//플레이어 체력 초기화		
-	MaxHealth = 100.0f;		
-	CurrentHealth = MaxHealth;
-
-	//발사체 클래스 초기화
-	ProjectileClass = AThirdPersonMPProjectile::StaticClass();
-	//발사 속도 초기화
-	FireRate = 0.25f;
-	bIsFiringWeapon = false;
 }
 
 void AUnrealEngineCharacter::BeginPlay()
@@ -78,9 +66,6 @@ void AUnrealEngineCharacter::BeginPlay()
 
 void AUnrealEngineCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	// 발사체 발사 처리, Fire에 해당하는 이벤트를 작동 시 StartFire 함수 실행
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AUnrealEngineCharacter::StartFire);
-
 	// Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
@@ -143,93 +128,4 @@ void AUnrealEngineCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
-}
-
-// 리플리케이트된 프로퍼티
-void AUnrealEngineCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
-{
-	// 부모 클래스의 복제 설정 호출
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	//현재 체력 리플리케이트
-	DOREPLIFETIME(AUnrealEngineCharacter, CurrentHealth);
-}
-
-void AUnrealEngineCharacter::OnHealthUpdate()
-{
-	//클라이언트 전용 함수 기능
-	if (IsLocallyControlled())	// 클라이언트라면 
-	{
-		FString healthMessage = FString::Printf(TEXT("You now have %f health remaining."), CurrentHealth);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, healthMessage);
-
-		if (CurrentHealth <= 0)
-		{
-			FString deathMessage = FString::Printf(TEXT("You have been killed."));
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, deathMessage);
-		}
-	}
-
-	//서버 전용 함수 기능
-	if (GetLocalRole() == ROLE_Authority)	//현재 액터가 서버에서 실행될 때
-	{
-		FString healthMessage = FString::Printf(TEXT("%s now has %f health remaining."), *GetFName().ToString(), CurrentHealth);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, healthMessage);
-	}
-
-	//모든 머신에서 실행되는 함수
-	/*
-		여기에 대미지 또는 사망의 결과로 발생하는 특별 함수 기능 배치
-	*/
-}
-
-void AUnrealEngineCharacter::OnRep_CurrentHealth()
-{
-	OnHealthUpdate();
-}
-void AUnrealEngineCharacter::SetCurrentHealth(float healthValue)
-{
-	if (GetLocalRole() == ROLE_Authority)
-	{
-		CurrentHealth = FMath::Clamp(healthValue, 0.f, MaxHealth);
-		OnHealthUpdate();
-	}
-}
-float AUnrealEngineCharacter::TakeDamage(float DamageTaken, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
-{
-	float damageApplied = CurrentHealth - DamageTaken;
-	SetCurrentHealth(damageApplied);
-	return damageApplied;
-}
-
-//////////////////////////////////////////////////////////////////////////
-// 발사체
-void AUnrealEngineCharacter::StartFire()
-{
-	if (!bIsFiringWeapon)
-	{
-		bIsFiringWeapon = true;
-		UWorld* World = GetWorld();
-		World->GetTimerManager().SetTimer(FiringTimer, this, &AUnrealEngineCharacter::StopFire, FireRate, false);
-		UE_LOG(LogTemp, Warning, TEXT("StartFire called!"));
-		HandleFire();
-	}
-}
-
-void AUnrealEngineCharacter::StopFire()
-{
-	bIsFiringWeapon = false;
-}
-
-void AUnrealEngineCharacter::HandleFire_Implementation()
-{
-	FVector spawnLocation = GetActorLocation() + (GetActorRotation().Vector() * 100.0f) + (GetActorUpVector() * 50.0f);
-	FRotator spawnRotation = GetActorRotation();
-
-	FActorSpawnParameters spawnParameters;
-	spawnParameters.Instigator = GetInstigator();
-	spawnParameters.Owner = this;
-
-	// 주어진 위치, 회전으로 새로운 액터 생성
-	AThirdPersonMPProjectile* spawnedProjectile = GetWorld()->SpawnActor<AThirdPersonMPProjectile>(spawnLocation, spawnRotation, spawnParameters);
 }
