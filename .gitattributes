@@ -1,0 +1,4 @@
+Content/Scene_Saloon/Assets/MS/3D/His_Wil_Furniture_Table_Wood_Worn_01.uasset filter=lfs diff=lfs merge=lfs -text
+Content/Scene_Saloon/Assets/MS/3D/His_Wil_Storage_BarrelStand_Wood_Worn_01.uasset filter=lfs diff=lfs merge=lfs -text
+Content/Scene_Saloon/Assets/MS/3D/Res_Rur_Storage_Bucket_Metal_Worn_03.uasset filter=lfs diff=lfs merge=lfs -text
+Content/Scene_Saloon/Assets/MS/3D/Res_Sto_Chest_Wood_Worn_08.uasset filter=lfs diff=lfs merge=lfs -text
