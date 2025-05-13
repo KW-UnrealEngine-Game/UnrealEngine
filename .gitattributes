@@ -1,0 +1,5 @@
+Content/DH/CharacterSample/ParagonGreystone filter=lfs diff=lfs merge=lfs -text
+ParagonGreystone filter=lfs diff=lfs merge=lfs -text
+ParagonSparrow filter=lfs diff=lfs merge=lfs -text
+ParagonSerath filter=lfs diff=lfs merge=lfs -text
+ParagonGideon filter=lfs diff=lfs merge=lfs -text
