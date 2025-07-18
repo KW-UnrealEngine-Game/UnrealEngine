@@ -4,3 +4,5 @@ ParagonSparrow filter=lfs diff=lfs merge=lfs -text
 ParagonSerath filter=lfs diff=lfs merge=lfs -text
 ParagonGideon filter=lfs diff=lfs merge=lfs -text
 ICe_Map_Contents filter=lfs diff=lfs merge=lfs -text
+ObsidianGoldOrnates_YV filter=lfs diff=lfs merge=lfs -text
+Tech_Lai_Walls filter=lfs diff=lfs merge=lfs -text
