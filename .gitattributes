@@ -12,3 +12,6 @@ Iceland_Environment filter=lfs diff=lfs merge=lfs -text
 SM_Iceland_Mountain_02.uasset filter=lfs diff=lfs merge=lfs -text
 MedievalDungeon filter=lfs diff=lfs merge=lfs -text
 model filter=lfs diff=lfs merge=lfs -text
+Dungeon02Map filter=lfs diff=lfs merge=lfs -text
+SM_Iceland_Mountain_SimpleC_02 filter=lfs diff=lfs merge=lfs -text
+SM_Iceland_Mountain_SimpleC_02.uasset filter=lfs diff=lfs merge=lfs -text
