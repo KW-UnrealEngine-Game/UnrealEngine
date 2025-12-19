@@ -90,9 +90,4 @@
 - 📄 회의록: [(Notion 링크)](https://www.notion.so/17c6e8d125f4819793d1fcdf8a74fb38?v=17c6e8d125f481fda37b000c9b3d5f3a&source=copy_link)
 - 🎥 시연 영상: [(YouTube 링크)](https://www.youtube.com/watch?v=_rsTmTaE4nM)
 
----
-
-> **쉽지만 가볍지 않은 ARPG**,  
-> 함께할수록 재미있는 게임을 목표로 합니다.
-
 
